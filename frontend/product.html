@@ -1,0 +1,66 @@
+<!-- product.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+   <div id="navbar-container"></div>
+  <script>
+    fetch("navbar.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("navbar-container").innerHTML = data;
+      });
+  </script>
+
+  <div class="product-page">
+    <h1 id="product-title"></h1>
+    <img id="product-image" src="" alt="Product Image" width="300px" />
+    <p id="product-type"></p>
+
+    <label for="size">Select Size:</label>
+    <select id="size">
+      <option value="">--Select--</option>
+      <option value="S">Small</option>
+      <option value="M">Medium</option>
+      <option value="L">Large</option>
+    </select>
+
+    <button id="add-to-cart">Add to Cart</button>
+    <p id="cart-status"></p>
+  </div>
+
+  <script>
+    // Extract product info from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const img = urlParams.get('img');
+    const type = urlParams.get('type');
+
+    // Populate content
+    document.getElementById("product-image").src = `../uploads/${img}`;
+    document.getElementById("product-title").textContent = img.split(".")[0].toUpperCase();
+    document.getElementById("product-type").textContent = `Category: ${type}`;
+
+    // Add to Cart handler
+    document.getElementById("add-to-cart").addEventListener("click", () => {
+      const size = document.getElementById("size").value;
+      if (!size) {
+        alert("Please select a size.");
+        return;
+      }
+
+      // Save cart to localStorage (or use backend)
+      const cartItem = { img, type, size };
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push(cartItem);
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      document.getElementById("cart-status").textContent = "✅ Added to cart!";
+    });
+  </script>
+</body>
+</html>

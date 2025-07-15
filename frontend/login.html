@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
+    <title>Document</title>
+</head>
+<body>
+<div id="navbar-container"></div>
+<script>
+  fetch("navbar.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("navbar-container").innerHTML = data;
+    });
+</script>
+
+    <form class="login" id="login-form">
+        <fieldset>
+            <h2>Log in</h2>
+            <p>
+                <input type="name" name="name" id="name" placeholder="Full Name" required>
+                <input type="email" name="email" id="email" placeholder="Email" required>
+                <input type="password" name="password" id="passward" placeholder="Password" required>
+            </p>
+            <p>
+                <button>Continue</button>
+            </p>
+            <p style="margin-left: 2rem;">
+                Don't have an account?
+                <a href="./register.html" class="register-link">Register</a>
+            </p>
+        </fieldset>
+    </form>
+    <script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // (Optional) Add login logic here — verify email/password from a database or API
+        // Simulate successful login:
+        alert("Login successful!");
+
+        // Redirect to index.html
+        window.location.href = "index.html";
+    });
+    </script>
+
+</body>
+</html>

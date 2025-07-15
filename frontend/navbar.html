@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <section id="navbar">
+            <h1 >BOLD</h1>
+            <input type="search" id="search-box" list="types" placeholder="Search"><br>
+            <datalist id="types">
+                <option value="shirts"></option>
+                <option value="tops"></option>
+                <option value="dresses"></option>
+            </datalist>
+            <button onclick="scrollToCategory()">Search</button>
+            <a href="./index.html"><button>Home</button></a>
+            <a href="./cart.html"><button>Shopping Cart</button></a>
+            <!-- <a href="#top"><button>Product</button></a> -->
+            <a href="#top"><button>Order</button></a>
+            <a href="./login.html"><button>Login</button></a> 
+              
+        </section>
+    </div>
+</body>
+<script>
+  function scrollToCategory() {
+    const query = document.getElementById("search-box").value.toLowerCase();
+    const validCategories = ["shirts", "tops", "dresses"];
+
+    const match = validCategories.find(cat => query.includes(cat));
+    if (match) {
+      const section = document.getElementById(match);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      } else {
+        alert("Section exists in search but not in this page.");
+      }
+    } else {
+      alert("No matching category found.");
+    }
+  }
+</script>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .cart-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .cart-item img {
+      width: 120px;
+      height: auto;
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    #clear-cart {
+      margin: 20px;
+      padding: 10px 15px;
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #clear-cart:hover {
+      background-color: darkred;
+    }
+  </style>
+</head>
+<body>
+<div id="navbar-container"></div>
+<script>
+  fetch("navbar.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("navbar-container").innerHTML = data;
+    });
+</script>
+
+
+  <h2 style="text-align:center">🛒 Your Shopping Cart</h2>
+  <div id="cart-container"></div>
+  <div style="text-align:center">
+    <button id="clear-cart">Clear Cart</button>
+  </div>
+
+  <script>
+    function renderCart() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const container = document.getElementById("cart-container");
+      container.innerHTML = "";
+
+      if (cart.length === 0) {
+        container.innerHTML = "<p style='text-align:center'>Your cart is empty.</p>";
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <img src="../uploads/${item.img}" alt="${item.img}">
+          <div class="cart-item-details">
+            <h3>${item.img.split(".")[0].toUpperCase()}</h3>
+            <p>Category: ${item.type}</p>
+            <p>Size: ${item.size}</p>
+            <button onclick="removeItem(${index})">Remove</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function removeItem(index) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    document.getElementById("clear-cart").addEventListener("click", () => {
+      if (confirm("Are you sure you want to clear the cart?")) {
+        localStorage.removeItem("cart");
+        renderCart();
+      }
+    });
+
+    // Initial render
+    renderCart();
+  </script>
+</body>
+</html>
