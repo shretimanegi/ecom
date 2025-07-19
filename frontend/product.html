@@ -1,4 +1,5 @@
-<!-- product.html -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-   <div id="navbar-container"></div>
+  <div id="navbar-container"></div>
   <script>
     fetch("navbar.html")
       .then(response => response.text())
@@ -16,11 +17,12 @@
         document.getElementById("navbar-container").innerHTML = data;
       });
   </script>
-
+  <!-- Product Content -->
   <div class="product-page">
     <h1 id="product-title"></h1>
     <img id="product-image" src="" alt="Product Image" width="300px" />
     <p id="product-type"></p>
+    <p id="product-price"></p>
 
     <label for="size">Select Size:</label>
     <select id="size">
@@ -29,6 +31,9 @@
       <option value="M">Medium</option>
       <option value="L">Large</option>
     </select>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" value="1" min="1" style="width: 50px;">
 
     <button id="add-to-cart">Add to Cart</button>
     <p id="cart-status"></p>
@@ -39,22 +44,39 @@
     const urlParams = new URLSearchParams(window.location.search);
     const img = urlParams.get('img');
     const type = urlParams.get('type');
+    const price = parseFloat(urlParams.get('price'));
 
     // Populate content
     document.getElementById("product-image").src = `../uploads/${img}`;
     document.getElementById("product-title").textContent = img.split(".")[0].toUpperCase();
     document.getElementById("product-type").textContent = `Category: ${type}`;
+    document.getElementById("product-price").textContent = `Price: ₹${price.toFixed(2)}`;
 
     // Add to Cart handler
     document.getElementById("add-to-cart").addEventListener("click", () => {
       const size = document.getElementById("size").value;
+      const quantity = parseInt(document.getElementById("quantity").value);
+
       if (!size) {
         alert("Please select a size.");
         return;
       }
 
-      // Save cart to localStorage (or use backend)
-      const cartItem = { img, type, size };
+      if (!quantity || quantity < 1) {
+        alert("Please enter a valid quantity.");
+        return;
+      }
+
+      const cartItem = {
+        id: Date.now(),  // unique ID
+        name: img.split(".")[0].toUpperCase(),
+        img,
+        type,
+        size,
+        price,
+        quantity
+      };
+
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
       cart.push(cartItem);
       localStorage.setItem("cart", JSON.stringify(cart));
